@@ -1,0 +1,70 @@
+{
+  "name": "restore-terminals",
+  "displayName": "Restore Terminals",
+  "description": "Automatically create named terminal tabs when you open a workspace. Configurable per-project via settings or a config file.",
+  "version": "0.1.0",
+  "publisher": "ervin-diaz",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "restoreTerminals.restore",
+        "title": "Restore Terminals: Create All Terminals"
+      },
+      {
+        "command": "restoreTerminals.closeAll",
+        "title": "Restore Terminals: Close All Managed Terminals"
+      }
+    ],
+    "configuration": {
+      "title": "Restore Terminals",
+      "properties": {
+        "restoreTerminals.terminals": {
+          "type": "array",
+          "default": [],
+          "description": "List of terminals to create. Each item has a 'name' and optional 'command'.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Terminal tab name"
+              },
+              "command": {
+                "type": "string",
+                "description": "Optional command to run on terminal creation"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "restoreTerminals.autoRestore": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically restore terminals when the workspace opens."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}
