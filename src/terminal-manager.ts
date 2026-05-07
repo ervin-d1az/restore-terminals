@@ -5,7 +5,7 @@ const managedTerminals: vscode.Terminal[] = [];
 
 export function createTerminals(configs: TerminalConfig[]): void {
   for (const config of configs) {
-    const terminal = vscode.window.createTerminal({ name: config.name });
+    const terminal: vscode.Terminal = vscode.window.createTerminal({ name: config.name });
 
     if (config.command) {
       terminal.sendText(config.command);
@@ -27,7 +27,7 @@ export function closeManaged(): void {
 }
 
 export function removeClosed(closed: vscode.Terminal): void {
-  const idx = managedTerminals.indexOf(closed);
+  const idx: number = managedTerminals.indexOf(closed);
   if (idx !== -1) {
     managedTerminals.splice(idx, 1);
   }

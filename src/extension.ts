@@ -1,11 +1,12 @@
 import * as vscode from "vscode";
+import { TerminalConfig } from "./types";
 import { resolveConfig } from "./config";
 import { createTerminals, closeManaged, removeClosed } from "./terminal-manager";
 
-const CONFIG_FILENAME = ".restore-terminals.json";
+const CONFIG_FILENAME: string = ".restore-terminals.json";
 
 function restore(): void {
-  const configs = resolveConfig();
+  const configs: TerminalConfig[] = resolveConfig();
 
   if (configs.length === 0) {
     vscode.window.showInformationMessage(
@@ -32,12 +33,12 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 
   context.subscriptions.push(
-    vscode.window.onDidCloseTerminal((closed) => {
+    vscode.window.onDidCloseTerminal((closed: vscode.Terminal) => {
       removeClosed(closed);
     })
   );
 
-  const autoRestore = vscode.workspace
+  const autoRestore: boolean = vscode.workspace
     .getConfiguration("restoreTerminals")
     .get<boolean>("autoRestore", true);
 

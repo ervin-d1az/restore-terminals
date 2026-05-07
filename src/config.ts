@@ -3,25 +3,25 @@ import * as fs from "fs";
 import * as path from "path";
 import { ConfigFile, TerminalConfig } from "./types";
 
-const CONFIG_FILENAME = ".restore-terminals.json";
+const CONFIG_FILENAME: string = ".restore-terminals.json";
 
 function getWorkspaceRoot(): string | undefined {
   return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 }
 
 function readConfigFile(): ConfigFile | null {
-  const root = getWorkspaceRoot();
+  const root: string | undefined = getWorkspaceRoot();
   if (!root) {
     return null;
   }
 
-  const configPath = path.join(root, CONFIG_FILENAME);
+  const configPath: string = path.join(root, CONFIG_FILENAME);
   if (!fs.existsSync(configPath)) {
     return null;
   }
 
   try {
-    const raw = fs.readFileSync(configPath, "utf-8");
+    const raw: string = fs.readFileSync(configPath, "utf-8");
     const parsed: ConfigFile = JSON.parse(raw);
 
     if (!Array.isArray(parsed.terminals)) {
@@ -38,12 +38,13 @@ function readConfigFile(): ConfigFile | null {
 }
 
 function readSettings(): TerminalConfig[] {
-  const config = vscode.workspace.getConfiguration("restoreTerminals");
-  return config.get<TerminalConfig[]>("terminals", []);
+  const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("restoreTerminals");
+  const terminals: TerminalConfig[] = config.get<TerminalConfig[]>("terminals", []);
+  return terminals;
 }
 
 export function resolveConfig(): TerminalConfig[] {
-  const fileConfig = readConfigFile();
+  const fileConfig: ConfigFile | null = readConfigFile();
   if (fileConfig && fileConfig.terminals.length > 0) {
     return fileConfig.terminals;
   }
