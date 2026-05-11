@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { TerminalConfig } from "./types";
 import { resolveConfig } from "./config";
-import { createTerminals, closeManaged, closeByName, removeClosed } from "./terminal-manager";
+import { createTerminals, closeManaged, closeAll, removeClosed } from "./terminal-manager";
 
 const CONFIG_FILENAME: string = ".restore-terminals.json";
 
@@ -43,8 +43,7 @@ export function activate(context: vscode.ExtensionContext): void {
     .get<boolean>("autoRestore", true);
 
   if (autoRestore) {
-    const names: Set<string> = new Set(resolveConfig().map((c: TerminalConfig) => c.name));
-    closeByName(names);
+    closeAll();
     restore();
   }
 }
