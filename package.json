@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/ervin-d1az/restore-terminals.git"
   },
-  "icon": "restore-terminals-icon.png",
+  "icon": "assets/icon.png",
   "keywords": [
     "terminal",
     "restore",
