@@ -5,7 +5,13 @@ const managedTerminals: vscode.Terminal[] = [];
 
 export function createTerminals(configs: TerminalConfig[]): void {
   for (const config of configs) {
-    const terminal: vscode.Terminal = vscode.window.createTerminal({ name: config.name });
+    const options: vscode.TerminalOptions = { name: config.name };
+
+    if (config.icon) {
+      options.iconPath = new vscode.ThemeIcon(config.icon);
+    }
+
+    const terminal: vscode.Terminal = vscode.window.createTerminal(options);
 
     if (config.command) {
       terminal.sendText(config.command);

@@ -55,6 +55,10 @@
               "command": {
                 "type": "string",
                 "description": "Optional command to run on terminal creation"
+              },
+              "icon": {
+                "type": "string",
+                "description": "Codicon name for the terminal tab icon (e.g. 'terminal-bash', 'rocket', 'hubot')"
               }
             },
             "required": [
