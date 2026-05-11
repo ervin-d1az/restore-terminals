@@ -59,6 +59,10 @@
               "icon": {
                 "type": "string",
                 "description": "Codicon name for the terminal tab icon (e.g. 'terminal-bash', 'rocket', 'hubot')"
+              },
+              "color": {
+                "type": "string",
+                "description": "Theme color for the terminal icon (e.g. 'terminal.ansiRed', 'terminal.ansiBlue', 'terminal.ansiGreen')"
               }
             },
             "required": [

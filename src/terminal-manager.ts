@@ -11,6 +11,10 @@ export function createTerminals(configs: TerminalConfig[]): void {
       options.iconPath = new vscode.ThemeIcon(config.icon) as unknown as vscode.Uri;
     }
 
+    if (config.color) {
+      options.color = new vscode.ThemeColor(config.color);
+    }
+
     const terminal: vscode.Terminal = vscode.window.createTerminal(options);
 
     if (config.command) {
