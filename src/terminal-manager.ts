@@ -8,7 +8,7 @@ export function createTerminals(configs: TerminalConfig[]): void {
     const options: vscode.TerminalOptions = { name: config.name };
 
     if (config.icon) {
-      options.iconPath = new vscode.ThemeIcon(config.icon);
+      options.iconPath = new vscode.ThemeIcon(config.icon) as unknown as vscode.Uri;
     }
 
     const terminal: vscode.Terminal = vscode.window.createTerminal(options);
