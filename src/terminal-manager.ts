@@ -2,13 +2,67 @@ import * as vscode from "vscode";
 import { TerminalConfig } from "./types";
 
 const managedTerminals: vscode.Terminal[] = [];
+const SHELL_INTEGRATION_TIMEOUT_MS: number = 3000;
 
-export function createTerminals(configs: TerminalConfig[]): void {
+function waitForShellReady(
+  terminal: vscode.Terminal
+): Promise<vscode.TerminalShellIntegration | undefined> {
+  if (terminal.shellIntegration) {
+    return Promise.resolve(terminal.shellIntegration);
+  }
+
+  return new Promise<vscode.TerminalShellIntegration | undefined>((resolve) => {
+    let settled: boolean = false;
+
+    const finish = (integration: vscode.TerminalShellIntegration | undefined): void => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      disposable.dispose();
+      clearTimeout(timer);
+      resolve(integration);
+    };
+
+    const disposable: vscode.Disposable = vscode.window.onDidChangeTerminalShellIntegration(
+      (event: vscode.TerminalShellIntegrationChangeEvent) => {
+        if (event.terminal === terminal) {
+          finish(event.shellIntegration);
+        }
+      }
+    );
+
+    const timer: NodeJS.Timeout = setTimeout(async () => {
+      try {
+        await terminal.processId;
+      } catch {
+        // best-effort fallback
+      }
+      finish(undefined);
+    }, SHELL_INTEGRATION_TIMEOUT_MS);
+  });
+}
+
+async function runCommand(terminal: vscode.Terminal, command: string): Promise<void> {
+  const integration: vscode.TerminalShellIntegration | undefined =
+    await waitForShellReady(terminal);
+
+  if (integration) {
+    integration.executeCommand(command);
+  } else {
+    terminal.sendText(command);
+  }
+}
+
+export async function createTerminals(configs: TerminalConfig[]): Promise<void> {
   for (const config of configs) {
     const options: vscode.TerminalOptions = { name: config.name };
 
     if (config.icon) {
-      options.iconPath = new vscode.ThemeIcon(config.icon) as unknown as vscode.Uri;
+      const iconColor: vscode.ThemeColor | undefined = config.color
+        ? new vscode.ThemeColor(config.color)
+        : undefined;
+      options.iconPath = new vscode.ThemeIcon(config.icon, iconColor) as unknown as vscode.Uri;
     }
 
     if (config.color) {
@@ -16,12 +70,11 @@ export function createTerminals(configs: TerminalConfig[]): void {
     }
 
     const terminal: vscode.Terminal = vscode.window.createTerminal(options);
+    managedTerminals.push(terminal);
 
     if (config.command) {
-      terminal.sendText(config.command);
+      await runCommand(terminal, config.command);
     }
-
-    managedTerminals.push(terminal);
   }
 
   if (configs.length > 0) {

@@ -5,7 +5,7 @@ import { createTerminals, closeManaged, removeClosed } from "./terminal-manager"
 
 const CONFIG_FILENAME: string = ".restore-terminals.json";
 
-function restore(): void {
+async function restore(): Promise<void> {
   const configs: TerminalConfig[] = resolveConfig();
 
   if (configs.length === 0) {
@@ -15,7 +15,7 @@ function restore(): void {
     return;
   }
 
-  createTerminals(configs);
+  await createTerminals(configs);
 }
 
 export function activate(context: vscode.ExtensionContext): void {
