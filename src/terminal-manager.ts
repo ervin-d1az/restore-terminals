@@ -82,6 +82,14 @@ export async function createTerminals(configs: TerminalConfig[]): Promise<void> 
   }
 }
 
+export function closeByName(names: Set<string>): void {
+  for (const terminal of vscode.window.terminals) {
+    if (terminal.name && names.has(terminal.name)) {
+      terminal.dispose();
+    }
+  }
+}
+
 export function closeManaged(): void {
   for (const terminal of managedTerminals) {
     terminal.dispose();
