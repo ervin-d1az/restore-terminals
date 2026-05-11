@@ -1,4 +1,12 @@
-src/
-node_modules/
-.vscode/
+.vscode/**
+.claude/**
+src/**
+spec/**
+node_modules/**
+out/**/*.map
+*.vsix
+.gitignore
+CLAUDE.md
 tsconfig.json
+package-lock.json
+.DS_Store
