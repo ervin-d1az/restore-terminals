@@ -43,8 +43,10 @@ export function activate(context: vscode.ExtensionContext): void {
     .get<boolean>("autoRestore", true);
 
   if (autoRestore) {
-    closeAll();
-    restore();
+    vscode.commands.executeCommand("workbench.action.closePanel").then(() => {
+      closeAll();
+      restore();
+    });
   }
 }
 
