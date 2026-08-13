@@ -1,6 +1,7 @@
 node_modules/
 out/
 *.vsix
+.restore-terminals.json
 .DS_Store
 spec/
 CLAUDE.md
