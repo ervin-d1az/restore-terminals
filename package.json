@@ -2,12 +2,12 @@
   "name": "terminal-restore",
   "displayName": "Terminal Restore",
   "description": "Automatically create named terminal tabs when you open a workspace. Configurable per-project via settings or a config file.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "ervin-diaz",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ervin-d1az/restore-terminals.git"
+    "url": "https://github.com/ervin-d1az/terminal-restore.git"
   },
   "icon": "assets/icon.png",
   "keywords": [

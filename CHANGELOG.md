@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1] - 2026-08-13
+
+### Changed
+
+- Point `repository` at the renamed GitHub repo (`ervin-d1az/terminal-restore`)
+
 ## [0.1.0] - 2026-08-13
 
 ### Added
