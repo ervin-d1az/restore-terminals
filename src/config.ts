@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { ConfigFile, TerminalConfig } from "./types";
 
-const CONFIG_FILENAME: string = ".restore-terminals.json";
+const CONFIG_FILENAME: string = ".terminal-restore.json";
 
 function getWorkspaceRoot(): string | undefined {
   return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
@@ -31,14 +31,14 @@ function readConfigFile(): ConfigFile | null {
     return parsed;
   } catch {
     vscode.window.showWarningMessage(
-      `Restore Terminals: Failed to parse ${CONFIG_FILENAME}`
+      `Terminal Restore: Failed to parse ${CONFIG_FILENAME}`
     );
     return null;
   }
 }
 
 function readSettings(): TerminalConfig[] {
-  const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("restoreTerminals");
+  const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("terminalRestore");
   const terminals: TerminalConfig[] = config.get<TerminalConfig[]>("terminals", []);
   return terminals;
 }

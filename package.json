@@ -1,6 +1,6 @@
 {
-  "name": "restore-terminals",
-  "displayName": "Restore Terminals",
+  "name": "terminal-restore",
+  "displayName": "Terminal Restore",
   "description": "Automatically create named terminal tabs when you open a workspace. Configurable per-project via settings or a config file.",
   "version": "0.1.0",
   "publisher": "ervin-diaz",
@@ -30,18 +30,18 @@
   "contributes": {
     "commands": [
       {
-        "command": "restoreTerminals.restore",
-        "title": "Restore Terminals: Create All Terminals"
+        "command": "terminalRestore.restore",
+        "title": "Terminal Restore: Create All Terminals"
       },
       {
-        "command": "restoreTerminals.closeAll",
-        "title": "Restore Terminals: Close All Managed Terminals"
+        "command": "terminalRestore.closeAll",
+        "title": "Terminal Restore: Close All Managed Terminals"
       }
     ],
     "configuration": {
-      "title": "Restore Terminals",
+      "title": "Terminal Restore",
       "properties": {
-        "restoreTerminals.terminals": {
+        "terminalRestore.terminals": {
           "type": "array",
           "default": [],
           "description": "List of terminals to create. Each item has a 'name' and optional 'command'.",
@@ -70,7 +70,7 @@
             ]
           }
         },
-        "restoreTerminals.autoRestore": {
+        "terminalRestore.autoRestore": {
           "type": "boolean",
           "default": true,
           "description": "Automatically restore terminals when the workspace opens."

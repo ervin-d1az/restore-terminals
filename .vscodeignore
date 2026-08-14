@@ -10,7 +10,7 @@ out/**/*.map
 .gitignore
 CLAUDE.md
 AGENTS.md
-.restore-terminals.json
+.terminal-restore.json
 tsconfig.json
 package-lock.json
 .DS_Store

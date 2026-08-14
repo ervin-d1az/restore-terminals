@@ -9,11 +9,11 @@
 - Terminal tab icons via codicons (`icon` property)
 - Terminal icon colors via theme colors (`color` property)
 - Shell-ready detection — waits for shell initialization before sending commands (shell integration with `processId` fallback)
-- Configuration via VS Code `settings.json` (`restoreTerminals.terminals`)
-- Configuration via `.restore-terminals.json` file (takes priority over settings)
+- Configuration via VS Code `settings.json` (`terminalRestore.terminals`)
+- Configuration via `.terminal-restore.json` file (takes priority over settings)
 - `autoRestore` setting to disable automatic terminal creation
-- Command: "Restore Terminals: Create All Terminals"
-- Command: "Restore Terminals: Close All Managed Terminals"
+- Command: "Terminal Restore: Create All Terminals"
+- Command: "Terminal Restore: Close All Managed Terminals"
 
 ### Fixed
 
