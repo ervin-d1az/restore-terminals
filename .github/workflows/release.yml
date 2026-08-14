@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      # The tag drives the release, so it must agree with the manifest —
+      # a mismatch would publish a version nobody can trace back to a tag.
+      - name: Verify tag matches package.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          manifest=$(node -p "require('./package.json').version")
+          if [ "$tag" != "$manifest" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $manifest"
+            exit 1
+          fi
+
+      - name: Package extension
+        run: npx @vscode/vsce package --out "terminal-restore-${GITHUB_REF_NAME#v}.vsix"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            "terminal-restore-${GITHUB_REF_NAME#v}.vsix"
+
+      # Requires a VSCE_PAT repository secret: an Azure DevOps PAT scoped to
+      # Marketplace > Manage, with Organization set to "All accessible
+      # organizations". Without it this step fails and the GitHub release above
+      # still stands.
+      - name: Publish to the VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx @vscode/vsce publish --packagePath "terminal-restore-${GITHUB_REF_NAME#v}.vsix"

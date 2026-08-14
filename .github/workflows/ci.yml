@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # package-lock.json is gitignored, so `npm ci` is not available here.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Type-check and compile
+        run: npm run compile
+
+      # Packaging is the real pre-flight: it validates the icon, the
+      # engines/@types agreement and the manifest the Marketplace will read.
+      - name: Package extension
+        run: npx @vscode/vsce package --out terminal-restore.vsix
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: terminal-restore.vsix
